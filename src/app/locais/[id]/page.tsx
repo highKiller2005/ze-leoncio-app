@@ -1,3 +1,4 @@
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,20 +16,18 @@ type LandmarkPage = {
 }
 
 async function getData(id: string): Promise<Landmark> {
-  const res = await fetch(`http://localhost:3000/api/landmark/${id}`, {
-    cache: 'reload',
-  });
+  const res = await axios.get(`/api/landmark/${id}`);
 
-  return res.json();
+  return res.data;
 }
 
-export async function generateStaticParams() {
-  const landmarks: Array<Landmark> = await fetch('http://localhost:3000/api/landmark').then((res) => res.json());
+// export async function generateStaticParams() {
+//   const landmarks: Array<Landmark> = await fetch('http://localhost:3000/api/landmark').then((res) => res.json());
  
-  return landmarks.map((landmark) => ({
-    id: landmark.id,
-  }));
-}
+//   return landmarks.map((landmark) => ({
+//     id: landmark.id,
+//   }));
+// }
 
 export default async function landmarkPage({ params }: LandmarkPage) {
   const { id } = params 
