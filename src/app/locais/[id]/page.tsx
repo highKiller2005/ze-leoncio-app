@@ -1,4 +1,6 @@
+import { db } from "@/services/firebase";
 import axios from "axios";
+import { doc, getDoc, getDocs } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,9 +18,12 @@ type LandmarkPage = {
 }
 
 async function getData(id: string): Promise<Landmark> {
-  const res = await axios.get(`/api/landmark/${id}`);
+  
+  const landmarkRef = doc(db, 'landmarks', id)
+  const landmark: any = (await getDoc(landmarkRef)).data()
 
-  return res.data;
+
+  return landmark
 }
 
 // export async function generateStaticParams() {

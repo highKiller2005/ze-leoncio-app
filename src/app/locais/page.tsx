@@ -6,11 +6,19 @@ import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/services/firebase";
 
 async function getData() {
-  const res = await axios.get('/api/landmark');
+  const querySnapshot = await getDocs(collection(db, "landmarks"))
+  const landmarks: any = []
 
-  return res.data;
+  querySnapshot.forEach(doc => {
+    landmarks.push({ id: doc.id, ...doc.data() })
+    // console.log(`${doc.id} => ${doc.data()}`)
+  })
+
+  return landmarks
 }
 
 export default async function Locais() {
